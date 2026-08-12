@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="CraftEngine/CraftEngine.vcxproj" Id="330decc6-3ba5-475b-8ac9-73159770b8ae" />
+  <Project Path="HellBulletGame/HellBulletGame.vcxproj" Id="4513f702-be6f-4ffe-a3b3-f21268d54505" />
+</Solution>
