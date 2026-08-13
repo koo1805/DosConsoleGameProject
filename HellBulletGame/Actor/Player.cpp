@@ -153,9 +153,9 @@ void Player::Move(float xDirection, float yDirection, float deltaTime)
 	}
 
 	// 화면 오른쪽 벗어나지 않도록 처리
-	if (xPosition + width >= Engine::Get().GetWidth() - Engine::Get().GetHUDWidth())
+	if (xPosition + width >= Engine::Get().GetPlayAreaWidth())
 	{
-		xPosition = static_cast<float>(Engine::Get().GetWidth() - width - Engine::Get().GetHUDWidth());
+		xPosition = static_cast<float>(Engine::Get().GetPlayAreaWidth() - width);
 	}
 
 	// 화면 위쪽 벗어나지 않도록 처리

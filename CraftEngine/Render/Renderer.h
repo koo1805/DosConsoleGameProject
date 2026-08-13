@@ -49,6 +49,9 @@ namespace Craft
 
 			// true면 문자열의 공백을 투명도 처리
 			bool transparentSpace = false;
+
+			// true일 때 HUD영역에 겹치면 그리지 않음
+			bool clipToHUDArea = false;
 		};
 
 	public:
@@ -61,7 +64,8 @@ namespace Craft
 			const Vector2& position,
 			Color color = Color::White,
 			int sortingOrder = 0,
-			bool transparentSpace = false
+			bool transparentSpace = false,
+			bool clipToHUDArea = false
 		);
 
 		// 화면에 그릴 다중문자열을 제출하는 함수
@@ -70,7 +74,6 @@ namespace Craft
 			const Vector2& position,
 			Color color = Color::White,
 			int sortingOrder = 0
-			//bool pivotCenter
 		);
 
 		// Draw 이벤트 함수 - Engine에서 호출

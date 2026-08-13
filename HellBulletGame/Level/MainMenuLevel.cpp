@@ -119,4 +119,6 @@ void MainMenuLevel::LoadTitle(const std::string& fileName)
 
 	// Todo: 타이틀 파일 불러오기?
 
+	fclose(file);
+	file = nullptr;
 }

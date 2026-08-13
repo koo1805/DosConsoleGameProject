@@ -63,6 +63,8 @@ namespace Craft
 		inline int GetHeight() const { return setting.height; }
 		inline int GetHUDWidth() const { return setting.hudWidth; }
 
+		inline int GetPlayAreaWidth() const { return setting.width - setting.hudWidth; }
+
 	protected:
 		// 입력 처리 함수 (입력 폴링)
 		void ProcessInput();

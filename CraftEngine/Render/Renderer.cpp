@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "ScreenBuffer.h"
+#include <Engine/Engine.h>
 #include <cassert>
 #include <iostream>
 #include <Windows.h>
@@ -82,7 +83,7 @@ namespace Craft
 		SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
 	}
 
-	void Renderer::Submit(const std::string& image, const Vector2& position, Color color, int sortingOrder, bool transparentSpace)
+	void Renderer::Submit(const std::string& image, const Vector2& position, Color color, int sortingOrder, bool transparentSpace, bool clipToHUDArea)
 	{
 		// 렌더 명령 생성 및 값 설정
 		RenderCommand command;
@@ -91,6 +92,7 @@ namespace Craft
 		command.color = color;
 		command.sortingOrder = sortingOrder;
 		command.transparentSpace = transparentSpace;
+		command.clipToHUDArea = clipToHUDArea;
 
 		// 렌더 큐에 명령 추가
 		renderQueue.emplace_back(command);
@@ -115,6 +117,7 @@ namespace Craft
 				Vector2(position.x, position.y + y),
 				color,
 				sortingOrder,
+				true,
 				true
 			);
 		}
@@ -174,8 +177,12 @@ namespace Craft
 			// 글자의 끝 위치
 			const int endX = startX + length - 1;
 
+			// HUD영역에 겹친 위치 구하기
+			// true일 때 
+			const int maxDraw = command.clipToHUDArea ? Engine::Get().GetPlayAreaWidth() - 1 : screenSize.x - 1;
+
 			// x 위치가 화면을 벗어났는지 확인
-			if (endX < 0 || startX >= screenSize.x)
+			if (endX < 0 || startX > maxDraw)
 			{
 				continue;
 			}
@@ -183,7 +190,7 @@ namespace Craft
 			// 실제 그릴 글자의 위치 구하기
 			// 삼항 연산자
 			const int visibleStart = startX < 0 ? 0 : startX;
-			const int visibleEnd = endX >= screenSize.x ? screenSize.x - 1 : endX;
+			const int visibleEnd = endX > maxDraw ? maxDraw : endX;
 
 			// 문자열을 루프 순회하면서 글자를 2차원 배열에 하나씩 기록
 			for (int x = visibleStart; x <= visibleEnd; ++x)

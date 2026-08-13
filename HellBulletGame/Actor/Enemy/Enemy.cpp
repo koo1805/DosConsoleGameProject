@@ -19,7 +19,7 @@ Enemy::Enemy(const std::string& image, int yPosition)
 	{
 		// 화면 오른쪽에 생성(이동은 왼쪽 방향)
 		direction = MoveDirection::Left;
-		xPosition = static_cast<float>(Engine::Get().GetWidth() - width - 28);
+		xPosition = static_cast<float>(Engine::Get().GetPlayAreaWidth() - width);
 	}
 	else
 	{
@@ -46,7 +46,7 @@ Enemy::Enemy(const Craft::Sprite& sprite, int yPosition)
 	{
 		// 화면 오른쪽에 생성(이동은 왼쪽 방향)
 		direction = MoveDirection::Left;
-		xPosition = static_cast<float>(Engine::Get().GetWidth() - width - 28);
+		xPosition = static_cast<float>(Engine::Get().GetPlayAreaWidth() - width);
 	}
 	else
 	{
@@ -78,7 +78,7 @@ void Enemy::Tick(float deltaTime)
 	}
 
 	// 좌표 검사 (오른쪽으로 벗어나는 경우)
-	if (xPosition > Engine::Get().GetWidth() - 1)
+	if (xPosition > Engine::Get().GetPlayAreaWidth())
 	{
 		Destroy();
 		return;
