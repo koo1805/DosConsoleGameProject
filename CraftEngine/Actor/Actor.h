@@ -4,6 +4,7 @@
 #include <Core/CraftObject.h>
 #include <Math/Vector2.h>
 #include <Math/Color.h>
+#include <Render/Sprite.h>
 #include <memory>		// std::weak_ptr 사용을 위해
 #include <string>
 
@@ -21,6 +22,12 @@ namespace Craft
 	public:
 		Actor(
 			const std::string& image = "",
+			const Vector2& position = Vector2::Zero,
+			Color color = Color::White
+		);
+		
+		Actor(
+			const Sprite& sprite,
 			const Vector2& position = Vector2::Zero,
 			Color color = Color::White
 		);
@@ -83,6 +90,9 @@ namespace Craft
 
 		// 화면에 그릴 글자.
 		std::string image;
+
+		// 문자열 Sprite
+		Sprite sprite;
 
 		// 글자 색상.
 		Color color = Color::White;

@@ -95,6 +95,30 @@ namespace Craft
 		renderQueue.emplace_back(command);
 	}
 
+	void Renderer::SubmitSprite(const Sprite& sprite, const Vector2& position, Color color, int sortingOrder)
+	{
+		// 문자열이 비어있는지 확인
+		if (sprite.IsEmpty())
+		{
+			return;
+		}
+
+		const std::vector<std::string>& lines = sprite.GetLines();
+
+		// 문자열의 수 만큼 반복
+		for (int y = 0; y < sprite.GetHeight(); ++y)
+		{
+			// 문자열을 Submit에 등록 / 위치 값은 높이값을 더함
+			Submit(
+				lines[y],
+				Vector2(position.x, position.y + y),
+				color,
+				sortingOrder
+				//true
+			);
+		}
+	}
+
 	void Renderer::Draw()
 	{
 		// 화면(이미지/프레임) 지우기

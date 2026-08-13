@@ -15,15 +15,15 @@ void PlayerProjectile::Tick(float deltaTime)
 
 	// 아래에서 위로 이동 처리
 	yPosition -= moveSpeed * deltaTime;
-	timer.Tick(deltaTime);
-	if (!timer.IsTimeOut())
-	{
-		xPosition += moveSpeed * deltaTime;
-	}
-	else
-	{
-		xPosition -= moveSpeed * deltaTime;
-	}
+	//timer.Tick(deltaTime);
+	//if (!timer.IsTimeOut())
+	//{
+	//	xPosition += moveSpeed * deltaTime;
+	//}
+	//else
+	//{
+	//	xPosition -= moveSpeed * deltaTime;
+	//}
 	// 좌표 검사(화면 벗어났는지 확인)
 	if (yPosition < 0.0f)
 	{

@@ -15,7 +15,7 @@ void GameLevel::OnInitialized()
 	SpawnActor<Player>();
 
 	// 적 생성기 액터 추가
-	//SpawnActor<EnemySpawner>();
+	SpawnActor<EnemySpawner>();
 
 	// 게임 관리자 생성 및 플레이어 죽음 이벤트에 함수 등록
 	gameManager = SpawnActor<GameManager>();

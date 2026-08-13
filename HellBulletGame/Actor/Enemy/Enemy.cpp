@@ -35,6 +35,32 @@ Enemy::Enemy(const std::string& image, int yPosition)
 	timer.SetTargetTime(Util::RandomRange(1.0f, 3.0f));
 }
 
+Enemy::Enemy(const Craft::Sprite& sprite, int yPosition) : Actor(sprite)
+{
+	//랜덤 (오른쪽 또는 왼쪽으로 이동할 지 결정)
+	int random = Util::RandomRange(1, 10);
+
+	// 랜덤으로 선택된 수가 짝수/홀수 여부에 따라 방향 결정
+	if (random % 2 == 0)
+	{
+		// 화면 오른쪽에 생성(이동은 왼쪽 방향)
+		direction = MoveDirection::Left;
+		xPosition = static_cast<float>(Engine::Get().GetWidth() - width - 28);
+	}
+	else
+	{
+		// 화면 왼쪽에 생성(이동은 오른쪽 방향)
+		direction = MoveDirection::Right;
+		xPosition = 0.0f;
+	}
+
+	// 위치 설정
+	SetPosition(Vector2(static_cast<int>(xPosition), yPosition));
+
+	// 발사 타이머 시간 설정 (1초에서 3초 사이의 시간을 랜덤으로)
+	timer.SetTargetTime(Util::RandomRange(1.0f, 3.0f));
+}
+
 void Enemy::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);

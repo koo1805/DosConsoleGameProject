@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include <Engine/Engine.h>
 #include <Input/Input.h>
+#include <Render/Sprite.h>
 #include <Level/GameLevel.h>
 #include <Actor/Projectile/PlayerProjectile.h>
 #include <Actor/Projectile/EnemyProjectile.h>

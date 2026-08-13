@@ -2,6 +2,7 @@
 
 #include <Actor/Actor.h>
 #include <Util/Timer.h>
+#include <Render/Sprite.h>
 
 class Enemy : public Craft::Actor
 {
@@ -17,7 +18,9 @@ class Enemy : public Craft::Actor
 	};
 
 public:
-	Enemy(const std::string& image = "(oOo)", int yPosition = 5);
+	Enemy(const std::string& image, int yPosition = 5);
+
+	Enemy(const Craft::Sprite& sprite, int yPosition = 5);
 
 
 private:

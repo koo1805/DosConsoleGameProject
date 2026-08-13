@@ -3,6 +3,7 @@
 #include <Core/Core.h>
 #include <Math/Vector2.h>
 #include <Math/Color.h>
+#include <Render/Sprite.h>
 #include <string>
 #include <vector>
 #include <memory>
@@ -45,6 +46,9 @@ namespace Craft
 
 			// 그리기 정렬 순서. 값이 크면 우선순위가 높음
 			int sortingOrder = -1;
+
+			// 투명도 처리
+			//bool transparentSpzce = false
 		};
 
 	public:
@@ -57,6 +61,16 @@ namespace Craft
 			const Vector2& position,
 			Color color = Color::White,
 			int sortingOrder = 0
+			//bool transparentSpace = false
+		);
+
+		// 화면에 그릴 다중문자열을 제출하는 함수
+		void SubmitSprite(
+			const Sprite& sprite,
+			const Vector2& position,
+			Color color = Color::White,
+			int sortingOrder = 0
+			//bool pivotCenter
 		);
 
 		// Draw 이벤트 함수 - Engine에서 호출
