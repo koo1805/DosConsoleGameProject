@@ -19,10 +19,13 @@ static std::string enemyType[] =
 // 생성할 적 Sprite 타입 배열
 static Sprite enemySpriteType[] =
 {
-	Sprite({";:^:;",
-			"    z",
-			"    o"}),
-	Sprite({"<-=->"}),
+	Sprite({";:^:;0000000",
+			"           z",
+			"           o",
+			"           o"}),
+	Sprite({"---<-=->   ",
+			"   <-=->   ",
+			"<-   =   ->"}),
 	Sprite({")qOp("}),
 };
 

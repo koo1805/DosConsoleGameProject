@@ -47,8 +47,8 @@ namespace Craft
 			// 그리기 정렬 순서. 값이 크면 우선순위가 높음
 			int sortingOrder = -1;
 
-			// 투명도 처리
-			//bool transparentSpzce = false
+			// true면 문자열의 공백을 투명도 처리
+			bool transparentSpace = false;
 		};
 
 	public:
@@ -60,8 +60,8 @@ namespace Craft
 			const std::string& image,
 			const Vector2& position,
 			Color color = Color::White,
-			int sortingOrder = 0
-			//bool transparentSpace = false
+			int sortingOrder = 0,
+			bool transparentSpace = false
 		);
 
 		// 화면에 그릴 다중문자열을 제출하는 함수

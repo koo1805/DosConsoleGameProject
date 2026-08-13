@@ -35,7 +35,8 @@ Enemy::Enemy(const std::string& image, int yPosition)
 	timer.SetTargetTime(Util::RandomRange(1.0f, 3.0f));
 }
 
-Enemy::Enemy(const Craft::Sprite& sprite, int yPosition) : Actor(sprite)
+Enemy::Enemy(const Craft::Sprite& sprite, int yPosition)
+	: Actor(sprite)
 {
 	//랜덤 (오른쪽 또는 왼쪽으로 이동할 지 결정)
 	int random = Util::RandomRange(1, 10);
@@ -87,7 +88,7 @@ void Enemy::Tick(float deltaTime)
 	SetPosition(Vector2(static_cast<int>(xPosition), GetPosition().y));
 
 	// 발사 처리
-
+	/*
 	// 타이머 시간 업데이트
 	timer.Tick(deltaTime);
 	if (!timer.IsTimeOut())
@@ -109,6 +110,7 @@ void Enemy::Tick(float deltaTime)
 			bulletPosition, Util::RandomRange(10.0f, 20.0f)
 		);
 	}
+	//*/
 }
 
 void Enemy::OnCollision(const std::shared_ptr<Actor>& other)

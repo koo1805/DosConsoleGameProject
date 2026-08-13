@@ -11,6 +11,13 @@ void GameLevel::OnInitialized()
 {
 	Level::OnInitialized();
 
+	// HUD 초기화
+	const int hudStartX = Engine::Get().GetWidth() - Engine::Get().GetHUDWidth();
+	const int hudWidth = Engine::Get().GetWidth() - hudStartX;
+	const int hudHeight = Engine::Get().GetHeight();
+
+	hudPanel.SetBounds(hudStartX, hudWidth, hudHeight);
+
 	// 플레이어 액터 추가
 	SpawnActor<Player>();
 
@@ -52,15 +59,21 @@ void GameLevel::Draw()
 {
 	Level::Draw();
 
-	UIBorder();
+	DrawHUD();
 }
 
-void GameLevel::UIBorder()
+void GameLevel::DrawHUD()
 {
-	for (int ix = 0; ix < Engine::Get().GetHeight(); ix++)
-	{
-		Renderer::Get().Submit("#", Vector2(120, ix));
-	}
+	hudPanel.DrawBorder();
+
+	hudPanel.DrawText("Hell Bullet", 2, Color::Red);
+	hudPanel.DrawSeparator(4);
+
+	hudPanel.DrawSeparator(9);
+
+	hudPanel.DrawText("CONTROL", 11);
+	hudPanel.DrawText("MOVE : W / A / S / D", 13);
+	hudPanel.DrawText("SHOT : SPACE  MODE : R", 14);
 }
 
 void GameLevel::PlayerDied()

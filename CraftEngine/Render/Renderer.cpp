@@ -82,7 +82,7 @@ namespace Craft
 		SetConsoleActiveScreenBuffer(GetStdHandle(STD_OUTPUT_HANDLE));
 	}
 
-	void Renderer::Submit(const std::string& image, const Vector2& position, Color color, int sortingOrder)
+	void Renderer::Submit(const std::string& image, const Vector2& position, Color color, int sortingOrder, bool transparentSpace)
 	{
 		// 렌더 명령 생성 및 값 설정
 		RenderCommand command;
@@ -90,6 +90,7 @@ namespace Craft
 		command.position = position;
 		command.color = color;
 		command.sortingOrder = sortingOrder;
+		command.transparentSpace = transparentSpace;
 
 		// 렌더 큐에 명령 추가
 		renderQueue.emplace_back(command);
@@ -113,8 +114,8 @@ namespace Craft
 				lines[y],
 				Vector2(position.x, position.y + y),
 				color,
-				sortingOrder
-				//true
+				sortingOrder,
+				true
 			);
 		}
 	}
@@ -190,6 +191,17 @@ namespace Craft
 				// 문자열에서 글자값을 가져올 때 사용할 인덱스
 				const int sourceIndex = x - startX;
 
+				// 현재 문자
+				const char currentChar = command.image[sourceIndex];
+
+				// 문자열에서 공백이 있으면 해당 공백은 투명도 처리
+				// transparentSpace가 true이고 현재 문자가 공백(' ')이면
+				// frame에 아무것도 쓰지않고 다음 문자로 넘어감
+				if (command.transparentSpace && currentChar == ' ')
+				{
+					continue;
+				}
+
 				// 글자 2차원 배열의 인덱스
 				// (y * width) + x
 				const int index = (command.position.y * screenSize.x) + x;
@@ -203,7 +215,7 @@ namespace Craft
 				}
 
 				// 2차원 배열에 글자, 속성 설정
-				frame->charInfoArray[index].Char.AsciiChar = command.image[sourceIndex];
+				frame->charInfoArray[index].Char.AsciiChar = currentChar;
 
 				// 글자 색상 값 설정
 				frame->charInfoArray[index].Attributes = static_cast<DWORD>(command.color);

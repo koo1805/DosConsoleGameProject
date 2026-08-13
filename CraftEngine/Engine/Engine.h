@@ -28,6 +28,9 @@ namespace Craft
 
 			// 사용할 콘솔 화면 높이
 			int height = 0;
+			
+			// 사용할 콘솔 화면 내 HUD 너비
+			int hudWidth = 0;
 		};
 
 	public:
@@ -58,6 +61,7 @@ namespace Craft
 		// Getter
 		inline int GetWidth() const { return setting.width; }
 		inline int GetHeight() const { return setting.height; }
+		inline int GetHUDWidth() const { return setting.hudWidth; }
 
 	protected:
 		// 입력 처리 함수 (입력 폴링)

@@ -311,6 +311,10 @@ namespace Craft
 			{
 				sscanf_s(token, "height = %d", &setting.height);
 			}
+			else if (strcmp(key, "hudWidth") == 0)
+			{
+				sscanf_s(token, "hudWidth = %d", &setting.hudWidth);
+			}
 
 			// 나머지 문자열 자르기(개행 문자 기준으로)
 			token = strtok_s(nullptr, "\n", &context);
@@ -404,11 +408,18 @@ namespace Craft
 				continue;
 			}
 
-			//framerate
+			//height
 			if (key == "height")
 			{
 				setting.height = static_cast<int>(atof(value.c_str()));
 				assert(setting.height > 0);
+			}
+			
+			//hudWidth
+			if (key == "hudWidth")
+			{
+				setting.hudWidth = static_cast<int>(atof(value.c_str()));
+				assert(setting.hudWidth > 0);
 			}
 
 		}
