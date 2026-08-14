@@ -96,6 +96,7 @@
     <ClCompile Include="Actor\Enemy\Enemy.cpp" />
     <ClCompile Include="Actor\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Actor\Manager\GameManager.cpp" />
+    <ClCompile Include="Actor\Manager\WaveManager.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Projectile\EnemyProjectile.cpp" />
     <ClCompile Include="Actor\Projectile\PlayerProjectile.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Actor\Enemy\EnemyStats.h" />
     <ClInclude Include="Actor\Enemy\NormalEnemy.h" />
     <ClInclude Include="Actor\Manager\GameManager.h" />
+    <ClInclude Include="Actor\Manager\WaveManager.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Projectile\EnemyProjectile.h" />
     <ClInclude Include="Actor\Projectile\PlayerProjectile.h" />

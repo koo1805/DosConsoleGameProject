@@ -10,9 +10,10 @@ class EnemySpawner : public Craft::Actor
 public:
 	EnemySpawner();
 
-private:
+protected:
 	virtual void Tick(float deltaTime) override;
 
+private:
 	// 적 생성 함수
 	void SpawnEnemy();
 

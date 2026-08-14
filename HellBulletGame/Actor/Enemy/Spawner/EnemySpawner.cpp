@@ -1,9 +1,6 @@
 #include "EnemySpawner.h"
 #include <Util/Util.h>
-#include <Math/Vector2.h>
 #include <Actor/Enemy/Enemy.h>
-#include <Actor/Enemy/EnemyStats.h>
-#include <Actor/Enemy/NormalEnemy.h>
 #include <Level/Level.h>
 #include <Render/Sprite.h>
 
@@ -32,6 +29,7 @@ void EnemySpawner::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
+	//*
 	// 타이머 업데이트
 	timer.Tick(deltaTime);
 
@@ -46,6 +44,7 @@ void EnemySpawner::Tick(float deltaTime)
 
 	// 적 생성
 	SpawnEnemy();
+	//*/
 }
 
 void EnemySpawner::SpawnEnemy()
@@ -65,7 +64,6 @@ void EnemySpawner::SpawnEnemy()
 	std::shared_ptr<Level> owner = GetOwner();
 	if (owner)
 	{
-		//owner->SpawnActor<Enemy>(testSpriteType[index], yPosition);
-		owner->SpawnActor<NormalEnemy>(Vector2(20, 0), EnemyMovePattern::DownToSide);
+		owner->SpawnActor<Enemy>(testSpriteType[index], yPosition);
 	}
 }

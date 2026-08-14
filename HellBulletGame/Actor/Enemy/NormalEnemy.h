@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Actor/Enemy/EnemyBase.h>
+#include <Math/Vector2.h>
 
 class NormalEnemy : public EnemyBase
 {
@@ -8,8 +9,5 @@ class NormalEnemy : public EnemyBase
 
 public:
 	NormalEnemy(const Craft::Vector2& position, EnemyMovePattern movePattern);
-
-private:
-	
 };
 

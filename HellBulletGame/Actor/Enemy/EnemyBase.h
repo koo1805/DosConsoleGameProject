@@ -3,7 +3,7 @@
 #include <Actor/Actor.h>
 #include <Actor/Enemy/EnemyStats.h>
 #include <Render/Sprite.h>
-
+#include <Math/Vector2.h>
 
 class EnemyBase : public Craft::Actor
 {
@@ -46,12 +46,12 @@ protected:
 	void MoveLeft(float deltaTime);
 	void MoveRight(float deltaTime);
 
+	void CheckOutScreen();
+
 	virtual void Fire();
 
 protected:
 	EnemyStats stats;
-
-	EnemyMovePattern movePattern = EnemyMovePattern::Down;
 
 	EnemyMoveState moveState = EnemyMoveState::Entering;
 

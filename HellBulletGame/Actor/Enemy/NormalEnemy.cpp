@@ -4,8 +4,8 @@
 
 NormalEnemy::NormalEnemy(const Craft::Vector2& position, EnemyMovePattern movePattern) : EnemyBase(
 	Craft::Sprite({
-			"|Y|",
-			" V "
+			"<|T|>",
+			"  V  "
 		}),
 	EnemyStats{ 3, 5.0f, 1.0f, 10, 1, movePattern},
 	position

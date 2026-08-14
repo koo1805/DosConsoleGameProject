@@ -1,4 +1,5 @@
 #include "EnemyBase.h"
+#include <Engine/Engine.h>
 #include <Level/Level.h>
 #include <Render/Sprite.h>
 #include <Math/Vector2.h>
@@ -7,14 +8,14 @@
 #include <Actor/Effect/DestroyEffect.h>
 #include <Actor/Manager/GameManager.h>
 
+using namespace Craft;
 EnemyBase::EnemyBase(const Craft::Sprite& sprite, const EnemyStats& stats, const Craft::Vector2& position)
-	: Actor(sprite), stats(stats), currentHp(stats.maxHp)
-{
-	SetPosition(position);
-
-	xPosition = static_cast<float>(position.x);
-	yPosition = static_cast<float>(position.y);
-}
+	: Actor(sprite, position),
+	stats(stats),
+	currentHp(stats.maxHp),
+	xPosition(static_cast<float>(position.x)),
+	yPosition(static_cast<float>(position.y))
+{ }
 
 void EnemyBase::TakeDamage(int damage)
 {
@@ -48,21 +49,23 @@ void EnemyBase::OnCollision(const std::shared_ptr<Actor>& other)
 		// 플레이어 탄약 제거
 		other->Destroy();
 
-		// 적 액터 제거
-		Destroy();
+		TakeDamage(1);
 
-		// 죽음 이펙트 구현 후 재생
-		if (GetOwner())
+		if (currentHp <= 0)
 		{
-			GetOwner()->SpawnActor<DestroyEffect>(GetPosition());
-
-			// 점수 획득 처리
-			std::shared_ptr<GameManager> gameManager = GetOwner()->GetActorOfType<GameManager>();
-
-			// 게임 관리자에 점수 획득 알림
-			if (gameManager)
+			// 죽음 이펙트 구현 후 재생
+			if (GetOwner())
 			{
-				gameManager->SetScore(gameManager->GetScore() + stats.score);
+				GetOwner()->SpawnActor<DestroyEffect>(GetPosition());
+
+				// 점수 획득 처리
+				std::shared_ptr<GameManager> gameManager = GetOwner()->GetActorOfType<GameManager>();
+
+				// 게임 관리자에 점수 획득 알림
+				if (gameManager)
+				{
+					gameManager->SetScore(gameManager->GetScore() + stats.score);
+				}
 			}
 		}
 	}
@@ -142,12 +145,33 @@ void EnemyBase::MoveDiagonalRight(float deltaTime)
 
 void EnemyBase::MoveLeft(float deltaTime)
 {
-	xPosition += stats.moveSpeed * deltaTime;
+	xPosition -= stats.moveSpeed * deltaTime;
 }
 
 void EnemyBase::MoveRight(float deltaTime)
 {
-	xPosition -= stats.moveSpeed * deltaTime;
+	xPosition += stats.moveSpeed * deltaTime;
+}
+
+void EnemyBase::CheckOutScreen()
+{
+	if (xPosition + GetWidth() < 0)
+	{
+		Destroy();
+		return;
+	}
+
+	if (xPosition > Engine::Get().GetPlayAreaWidth())
+	{
+		Destroy();
+		return;
+	}
+
+	if (yPosition > Engine::Get().GetHeight())
+	{
+		Destroy();
+		return;
+	}
 }
 
 void EnemyBase::Fire()
