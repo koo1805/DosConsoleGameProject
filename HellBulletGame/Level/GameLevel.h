@@ -43,7 +43,7 @@ private:
 	Craft::HUDPanel hudPanel;
 
 	// 게임 오버 대기 타이머
-	Timer timer;
+	Craft::Timer timer;
 
 	// 게임 오버 대기 시간 (단위: 초)
 	const float gameOverWaitTime = 2.0f;

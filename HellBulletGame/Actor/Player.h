@@ -49,7 +49,7 @@ private:
 	FireMode fireMode = FireMode::None;
 
 	// 타이머 변수
-	Timer timer;
+	Craft::Timer timer;
 
 	// 연사 시 발사 간격(단위: 초)
 	float fireInterval = 0.15f;

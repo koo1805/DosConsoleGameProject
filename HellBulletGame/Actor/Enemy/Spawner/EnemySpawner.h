@@ -18,5 +18,5 @@ private:
 
 private:
 	// 타이머
-	Timer timer;
+	Craft::Timer timer;
 };

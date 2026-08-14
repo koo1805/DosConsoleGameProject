@@ -94,27 +94,30 @@
   <ItemGroup>
     <ClCompile Include="Actor\Effect\DestroyEffect.cpp" />
     <ClCompile Include="Actor\Enemy\Enemy.cpp" />
+    <ClCompile Include="Actor\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Actor\Manager\GameManager.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Projectile\EnemyProjectile.cpp" />
     <ClCompile Include="Actor\Projectile\PlayerProjectile.cpp" />
     <ClCompile Include="Actor\Enemy\Spawner\EnemySpawner.cpp" />
+    <ClCompile Include="Actor\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Level\GameLevel.cpp" />
     <ClCompile Include="Level\MainMenuLevel.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Util\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Effect\DestroyEffect.h" />
     <ClInclude Include="Actor\Enemy\Enemy.h" />
+    <ClInclude Include="Actor\Enemy\EnemyStats.h" />
+    <ClInclude Include="Actor\Enemy\NormalEnemy.h" />
     <ClInclude Include="Actor\Manager\GameManager.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Projectile\EnemyProjectile.h" />
     <ClInclude Include="Actor\Projectile\PlayerProjectile.h" />
     <ClInclude Include="Actor\Enemy\Spawner\EnemySpawner.h" />
+    <ClInclude Include="Actor\Enemy\EnemyBase.h" />
     <ClInclude Include="Level\GameLevel.h" />
     <ClInclude Include="Level\MainMenuLevel.h" />
-    <ClInclude Include="Util\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

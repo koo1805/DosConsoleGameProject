@@ -16,7 +16,7 @@ private:
 	virtual void Tick(float deltaTime);
 
 private:
-	Timer timer;
+	Craft::Timer timer;
 
 	// 속도 (단위 - 초)
 	float moveSpeed = 30.0f;

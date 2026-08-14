@@ -15,6 +15,7 @@ void PlayerProjectile::Tick(float deltaTime)
 
 	// 아래에서 위로 이동 처리
 	yPosition -= moveSpeed * deltaTime;
+	//xPosition -= moveSpeed * deltaTime;
 	//timer.Tick(deltaTime);
 	//if (!timer.IsTimeOut())
 	//{

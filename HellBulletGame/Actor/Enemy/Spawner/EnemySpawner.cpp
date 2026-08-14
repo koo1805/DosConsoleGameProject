@@ -1,23 +1,16 @@
 #include "EnemySpawner.h"
 #include <Util/Util.h>
+#include <Math/Vector2.h>
 #include <Actor/Enemy/Enemy.h>
+#include <Actor/Enemy/EnemyStats.h>
+#include <Actor/Enemy/NormalEnemy.h>
 #include <Level/Level.h>
 #include <Render/Sprite.h>
 
 using namespace Craft;
 
-// 생성할 적 이미지 타입 배열
-static std::string enemyType[] =
-{
-	";:^:;",
-	"zZwZz",
-	"oO@Oo",
-	"<-=->",
-	")qOp(",
-};
-
 // 생성할 적 Sprite 타입 배열
-static Sprite enemySpriteType[] =
+static Sprite testSpriteType[] =
 {
 	Sprite({";:^:;0000000",
 			"           z",
@@ -58,12 +51,9 @@ void EnemySpawner::Tick(float deltaTime)
 void EnemySpawner::SpawnEnemy()
 {
 	// 적 생성 처리
-
-	// 적 이미지 배열의 길이 확인
-	const int length = sizeof(enemyType) / sizeof(enemyType[0]);
 	
 	// 적 이미지 배열의 길이 확인
-	const int length2 = sizeof(enemySpriteType) / sizeof(enemySpriteType[0]);
+	const int length2 = sizeof(testSpriteType) / sizeof(testSpriteType[0]);
 
 	// 랜덤 인덱스
 	const int index = Util::RandomRange(0, length2 - 1);
@@ -75,6 +65,7 @@ void EnemySpawner::SpawnEnemy()
 	std::shared_ptr<Level> owner = GetOwner();
 	if (owner)
 	{
-		owner->SpawnActor<Enemy>(enemySpriteType[index], yPosition);
+		//owner->SpawnActor<Enemy>(testSpriteType[index], yPosition);
+		owner->SpawnActor<NormalEnemy>(Vector2(20, 0), EnemyMovePattern::DownToSide);
 	}
 }

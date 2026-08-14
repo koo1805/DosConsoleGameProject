@@ -47,5 +47,5 @@ private:
 	float stopDownPosition = 5.0f;
 
 	// 발사 타이머
-	Timer timer;
+	Craft::Timer timer;
 };
