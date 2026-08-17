@@ -13,6 +13,7 @@ static Sprite testSpriteType[] =
 			"           z",
 			"           o",
 			"           o"}),
+
 	Sprite({"---<-=->   ",
 			"   <-=->   ",
 			"<-   =   ->"}),

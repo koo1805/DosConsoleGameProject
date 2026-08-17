@@ -1,27 +1,25 @@
 #include "EnemyProjectile.h"
-#include <Engine/Engine.h>
 
 using namespace Craft;
-EnemyProjectile::EnemyProjectile(const Craft::Vector2& position, float moveSpeed)
-	: Actor("||", position, Color::White),
-	moveSpeed(moveSpeed), yPosition(static_cast<float>(position.y))
-{
-}
 
-void EnemyProjectile::Tick(float deltaTime)
-{
-	super::Tick(deltaTime);
+EnemyProjectile::EnemyProjectile(const Vector2& position,
+	float directionX,
+	float directionY,
+	float moveSpeed,
+	int damage
+)
+	: ProjectileBase(
+		"o",
+		position,
+		Color::Yellow,
 
-	// y 위치 업데이트 (아래로 이동 처리)
-	yPosition += moveSpeed * deltaTime;
+		ProjectileTeam::Enemy,
+		ProjectileMoveType::Straight,
 
-	// 좌표 검사
-	if (yPosition >= Engine::Get().GetHeight() - 1)
-	{
-		Destroy();
-		return;
-	}
+		moveSpeed,
+		damage,
 
-	// 위치 설정
-	SetPosition(Vector2(GetPosition().x, static_cast<int>(yPosition)));
-}
+		directionX,
+		directionY
+	)
+{}

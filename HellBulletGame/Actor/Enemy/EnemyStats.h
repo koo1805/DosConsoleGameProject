@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Math/Vector2.h>
+
 enum class EnemyMovePattern
 {
 	Down,
@@ -7,7 +9,18 @@ enum class EnemyMovePattern
 	DiagonalLeft,
 	DiagonalRight,
 	Left,
-	Right
+	Right,
+	TargetStop,
+	Zigzag
+};
+
+enum class EnemyFirePattern
+{
+	None,
+	Straight,
+	AimPlayer,
+	Burst,
+	EightWay
 };
 
 struct EnemyStats
@@ -18,4 +31,6 @@ struct EnemyStats
 	int score = 10;
 	int damage = 1;
 	EnemyMovePattern movePattern = EnemyMovePattern::Down;
+	EnemyFirePattern firePattern = EnemyFirePattern::Straight;
+	Craft::Vector2 targetPosition;
 };

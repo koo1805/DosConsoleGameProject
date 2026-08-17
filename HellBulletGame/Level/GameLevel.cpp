@@ -1,10 +1,14 @@
 ﻿#include "GameLevel.h"
 #include <Engine/Engine.h>
 #include <Render/Renderer.h>
+#include <Level/MainMenuLevel.h>
 #include <Actor/Player.h>
 #include <Actor/Enemy/Spawner/EnemySpawner.h>
+#include <Actor/Enemy/BossEnemy.h>
 #include <Actor/Manager/GameManager.h>
 #include <Actor/Manager/WaveManager.h>
+
+#include <string>
 
 using namespace Craft;
 
@@ -20,7 +24,7 @@ void GameLevel::OnInitialized()
 	hudPanel.SetBounds(hudStartX, hudWidth, hudHeight);
 
 	// 플레이어 액터 추가
-	SpawnActor<Player>();
+	player = SpawnActor<Player>();
 
 	// 적 생성기 액터 추가
 	//SpawnActor<EnemySpawner>();
@@ -36,19 +40,26 @@ void GameLevel::OnInitialized()
 				PlayerDied();
 			}
 		);
+
+		gameManager->RegisterOnBossDead(
+			[this]()
+			{
+				BossDied();
+			}
+		);
 	}
 }
 
 void GameLevel::Tick(float deltaTime)
 {
 	// 게임 오버 시 레벨 업데이트 중지
-	if (gameState == GameState::GameOverWait)
+	if (gameState == GameState::GameOverWait || gameState == GameState::GameClear)
 	{
 		// 타이머 시간 업데이트
 		timer.Tick(deltaTime);
 		if (timer.IsTimeOut())
 		{
-			Engine::Get().Quit();
+			Engine::Get().AddNewLevel<MainMenuLevel>();
 		}
 
 		return;
@@ -62,6 +73,11 @@ void GameLevel::Draw()
 	Level::Draw();
 
 	DrawHUD();
+
+	if (gameState == GameState::GameClear)
+	{
+		DrawGameClear();
+	}
 }
 
 void GameLevel::DrawHUD()
@@ -69,13 +85,88 @@ void GameLevel::DrawHUD()
 	hudPanel.DrawBorder();
 
 	hudPanel.DrawText("Hell Bullet", 2, Color::Red);
-	hudPanel.DrawSeparator(4);
+	hudPanel.DrawSeparator(5);
 
-	hudPanel.DrawSeparator(9);
+	std::shared_ptr<BossEnemy> boss = gameManager->GetBoss();
+	if (boss)
+	{
+		const std::string bossHpText =
+			"BOSS HP : " +
+			std::to_string(boss->GetHp()) +
+			" / " +
+			std::to_string(boss->GetMaxHp());
 
-	hudPanel.DrawText("CONTROL", 11);
-	hudPanel.DrawText("MOVE : W / A / S / D", 13);
-	hudPanel.DrawText("SHOT : SPACE  MODE : R", 14);
+		hudPanel.DrawText(
+			bossHpText,
+			8,
+			Craft::Color::Red
+		);
+	}
+
+	hudPanel.DrawSeparator(21);
+	std::shared_ptr<Player> currentPlayer = player.lock();
+
+	if (currentPlayer)
+	{
+		const std::string hpText =
+			"HP : " +
+			std::to_string(currentPlayer->GetHp()) +
+			" / " +
+			std::to_string(currentPlayer->GetMaxHp());
+
+		hudPanel.DrawText(
+			hpText,
+			23,
+			Color::Green
+		);
+	}
+
+	hudPanel.DrawSeparator(25);
+	if (gameManager)
+	{
+		const std::string scoreText = "SCORE : " + std::to_string(gameManager->GetScore());
+
+		hudPanel.DrawText(scoreText, 27);
+	}
+
+	hudPanel.DrawSeparator(29);
+
+	hudPanel.DrawText("CONTROL", 31);
+	hudPanel.DrawText("MOVE : W / A / S / D", 34);
+	hudPanel.DrawText("SHOT : SPACE |  MODE : R", 36);
+}
+
+void GameLevel::DrawGameClear()
+{
+	const int playWidth = Engine::Get().GetPlayAreaWidth();
+	const int centerY = Engine::Get().GetHeight() / 2;
+
+	const std::string line1 = "====================";
+	const std::string line2 = "     GAME CLEAR     ";
+	const std::string line3 = "====================";
+
+	const int startX = (playWidth - static_cast<int>(line1.length())) / 2;
+
+	Renderer::Get().Submit(
+		line1,
+		Vector2(startX, centerY - 1),
+		Color::Green,
+		100
+	);
+
+	Renderer::Get().Submit(
+		line2,
+		Vector2(startX, centerY),
+		Color::Green,
+		100
+	);
+
+	Renderer::Get().Submit(
+		line3,
+		Vector2(startX, centerY + 1),
+		Color::Green,
+		100
+	);
 }
 
 void GameLevel::PlayerDied()
@@ -84,5 +175,12 @@ void GameLevel::PlayerDied()
 	gameState = GameState::GameOverWait;
 
 	// 게임 오버 타이머 시간 설정
+	timer.SetTargetTime(gameOverWaitTime);
+}
+
+void GameLevel::BossDied()
+{
+	gameState = GameState::GameClear;
+
 	timer.SetTargetTime(gameOverWaitTime);
 }

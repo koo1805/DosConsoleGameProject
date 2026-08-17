@@ -4,6 +4,7 @@
 #include <Actor/Enemy/EnemyStats.h>
 #include <Render/Sprite.h>
 #include <Math/Vector2.h>
+#include <Util/Timer.h>
 
 class EnemyBase : public Craft::Actor
 {
@@ -24,6 +25,7 @@ public:
 
 	// Getter 함수
 	inline int GetMaxHp() const { return stats.maxHp; }
+	inline int GetHp() const { return currentHp; }
 	inline int GetScore() const { return stats.score; }
 
 	void TakeDamage(int damage);
@@ -45,15 +47,32 @@ protected:
 	void MoveDiagonalRight(float deltaTime);
 	void MoveLeft(float deltaTime);
 	void MoveRight(float deltaTime);
+	void MoveTargetStop(float deltaTime);
+	void MoveZigzag(float deltaTime);
 
 	void CheckOutScreen();
 
 	virtual void Fire();
 
+	// 발사 타입
+	void FireStraight();
+	void FireEightWay();
+	void FireAimPlayer();
+	void FireBurst();
+
+	// 발사 위치 계산 함수
+	Craft::Vector2 GetFirePosition() const;
+
+	// 실제 Projectile 한 발 생성
+	void SpawnProjectile(float directionX, float directionY);
+
+
 protected:
 	EnemyStats stats;
 
 	EnemyMoveState moveState = EnemyMoveState::Entering;
+
+	Craft::Timer timer;
 
 	int currentHp = 1;
 

@@ -4,12 +4,12 @@
 #include <Render/Sprite.h>
 #include <Level/GameLevel.h>
 #include <Actor/Projectile/PlayerProjectile.h>
-#include <Actor/Projectile/EnemyProjectile.h>
+#include <Actor/Projectile/ProjectileBase.h>
 #include <Actor/Effect/DestroyEffect.h>
 #include <Actor/Manager/GameManager.h>
 
 using namespace Craft;
-Player::Player() : Actor("P", Vector2::Zero, Color::Green), fireMode(FireMode::Single)
+Player::Player() : Actor("P", Vector2::Zero, Color::Green), currentHp(playerStats.maxHp), fireMode(FireMode::Single)
 {
 	// 생성 위치 설정
 	int x = (Engine::Get().GetWidth() / 2) - (width / 2);
@@ -112,28 +112,28 @@ void Player::OnCollision(const std::shared_ptr<Actor>& other)
 {
 	super::OnCollision(other);
 
-	// 충돌한 액터가 적 탄약인지 확인
-	if (other->IsTypeOf<EnemyProjectile>())
+	std::shared_ptr<ProjectileBase> projectile = Craft::Cast<ProjectileBase>(other);
+
+	if (!projectile)
 	{
-		// 플레이어 제거
-		Destroy();
+		return;
+	}
+
+	// Enemy가 발사한 Projectile만 충돌처리함
+	if (projectile->GetTeam() != ProjectileTeam::Enemy)
+	{
+		return;
+	}
+
+	// 충돌한 액터가 적 탄약인지 확인
+	if (other->IsTypeOf<ProjectileBase>())
+	{
+		const int damage = projectile->GetDamage();
 
 		// 적 탄약 제거
-		other->Destroy();
+		projectile->Destroy();
 
-		// 파괴 이펙트 생성
-		if (GetOwner())
-		{
-			GetOwner()->SpawnActor<DestroyEffect>(GetPosition());
-
-			// 게임 관리자에 플레이어 죽음 알림
-			std::shared_ptr<GameManager> gameManager = GetOwner()->GetActorOfType<GameManager>();
-			if (gameManager)
-			{
-				gameManager->SetPlayerDead(position);
-			}
-		}
-
+		TakeDamage(damage);
 	}
 }
 
@@ -191,7 +191,7 @@ void Player::Fire()
 	std::shared_ptr<Level> owner = GetOwner();
 	if (owner)
 	{
-		owner->SpawnActor<PlayerProjectile>(projectilePosition);
+		owner->SpawnActor<PlayerProjectile>(projectilePosition, GetAttack());
 	}
 }
 
@@ -208,4 +208,36 @@ void Player::AutomaticFire()
 
 	// 경과 시간 초기화.
 	timer.Reset();
+}
+
+void Player::TakeDamage(int damage)
+{
+	// damage가 0일때 건너뛰기
+	if (damage <= 0)
+	{
+		return;
+	}
+
+	currentHp -= damage;
+
+	if (currentHp <= 0)
+	{
+		currentHp = 0;
+
+		// 플레이어 제거
+		Destroy();
+
+		// 파괴 이펙트 생성
+		if (GetOwner())
+		{
+			GetOwner()->SpawnActor<DestroyEffect>(GetPosition());
+
+			// 게임 관리자에 플레이어 죽음 알림
+			std::shared_ptr<GameManager> gameManager = GetOwner()->GetActorOfType<GameManager>();
+			if (gameManager)
+			{
+				gameManager->SetPlayerDead(position);
+			}
+		}
+	}
 }

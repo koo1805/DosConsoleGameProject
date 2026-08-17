@@ -1,6 +1,10 @@
 #include "WaveManager.h"
 #include <Level/Level.h>
 #include <Actor/Enemy/NormalEnemy.h>
+#include <Actor/Enemy/FastEnemy.h>
+#include <Actor/Enemy/EightwayEnemy.h>
+#include <Actor/Enemy/BossEnemy.h>
+#include <Actor/Manager/GameManager.h>
 
 using namespace Craft;
 WaveManager::WaveManager()
@@ -21,6 +25,7 @@ void WaveManager::Tick(float deltaTime)
 	}
 }
 
+// 적 웨이브 구축
 void WaveManager::BuildWave()
 {
 	wave.clear();
@@ -28,9 +33,16 @@ void WaveManager::BuildWave()
 	waveTime = 0.0f;
 	waveIndex = 0;
 
-	AddHorizontalLine(0.0f, 20, 0, 5, 10, EnemyMovePattern::Down);
-	AddVerticalLine(2.0f, 15, 0, 5, 1.0f, EnemyMovePattern::Down);
-	AddCross(8.0f, 10, 80, 0, 3, 2.0f);
+	AddHorizontalLine(0.0f, 20, 0, 5, 10, EnemyType::Normal, EnemyMovePattern::Down, EnemyFirePattern::Straight);
+	AddVerticalLine(2.0f, 15, 0, 4, 1.0f, EnemyType::Normal, EnemyMovePattern::Down, EnemyFirePattern::AimPlayer);
+
+	AddHorizontalLine(7.0f, 40, 0, 2, 40, EnemyType::Fast, EnemyMovePattern::DownToSide, EnemyFirePattern::Straight);
+	AddHorizontalLine(9.0f, 40, 0, 2, 40, EnemyType::Fast, EnemyMovePattern::DownToSide, EnemyFirePattern::Straight);
+	
+	AddCross(12.0f, 20, 100, 0, 3, 2.0f, EnemyType::Normal, EnemyFirePattern::Straight);
+	AddTargetPosition(16.0f, Craft::Vector2(10, 0), Craft::Vector2(60, 20), EnemyType::Eightway, EnemyFirePattern::EightWay);
+	AddHorizontalLine(17.0f, 40, 0, 4, 20, EnemyType::Fast, EnemyMovePattern::DownToSide, EnemyFirePattern::AimPlayer);
+	AddTargetPosition(22.0f, Craft::Vector2(52, -5), Craft::Vector2(52, 6), EnemyType::Boss, EnemyFirePattern::AimPlayer);
 }
 
 void WaveManager::SpawnWaveEnemy(const WaveSpawnInfo& spawnInfo)
@@ -44,30 +56,79 @@ void WaveManager::SpawnWaveEnemy(const WaveSpawnInfo& spawnInfo)
 		return;
 	}
 
-	owner->SpawnActor<NormalEnemy>(spawnInfo.position, spawnInfo.movePattern);
-}
-
-void WaveManager::AddHorizontalLine(float spawnTime, int startX, int y, int count, int spacing, EnemyMovePattern movePattern)
-{
-	for (int i = 0; i < count; ++i)
+	switch (spawnInfo.enemyType)
 	{
-		wave.push_back({ spawnTime, Craft::Vector2(startX + spacing * i, y), movePattern });
+	case EnemyType::Normal:
+	{
+		owner->SpawnActor<NormalEnemy>(spawnInfo.position, spawnInfo.targetPosition, spawnInfo.movePattern, spawnInfo.firePattern);
+
+		break;
+	}
+	
+	case EnemyType::Fast:
+	{
+		owner->SpawnActor<FastEnemy>(spawnInfo.position, spawnInfo.targetPosition, spawnInfo.movePattern, spawnInfo.firePattern);
+
+		break;
+	}
+
+	case EnemyType::Eightway:
+	{
+		owner->SpawnActor<EightwayEnemy>(spawnInfo.position, spawnInfo.targetPosition, spawnInfo.movePattern, spawnInfo.firePattern);
+
+		break;
+	}
+
+	case EnemyType::Boss:
+	{
+		std::shared_ptr<BossEnemy> boss = owner->SpawnActor<BossEnemy>(spawnInfo.position, spawnInfo.targetPosition);
+
+		std::shared_ptr<GameManager> gameManager = owner->GetActorOfType<GameManager>();
+
+		if (gameManager)
+		{
+			gameManager->SetBoss(boss);
+		}
+
+		break;
+	}
 	}
 }
 
-void WaveManager::AddVerticalLine(float spawnTime, int x, int y, int count, float interval, EnemyMovePattern movePattern)
+// 수평 패턴
+void WaveManager::AddHorizontalLine(float spawnTime, int startX, int y, int count, int spacing, EnemyType enemyType, EnemyMovePattern movePattern, EnemyFirePattern firePattern)
 {
 	for (int i = 0; i < count; ++i)
 	{
-		wave.push_back({ spawnTime + interval * i, Craft::Vector2(x, y), movePattern });
+		wave.emplace_back(spawnTime, Craft::Vector2(startX + spacing * i, y), enemyType, movePattern, firePattern);
 	}
 }
 
-void WaveManager::AddCross(float spawnTime, int leftX, int rightX, int y, int count, float interval)
+// 수직 패턴
+void WaveManager::AddVerticalLine(float spawnTime, int x, int y, int count, float interval, EnemyType enemyType, EnemyMovePattern movePattern, EnemyFirePattern firePattern)
 {
 	for (int i = 0; i < count; ++i)
 	{
-		wave.push_back({ spawnTime + interval * i, Craft::Vector2(leftX, y), EnemyMovePattern::DiagonalRight });
-		wave.push_back({ spawnTime + interval * i, Craft::Vector2(rightX, y), EnemyMovePattern::DiagonalLeft });
+		wave.emplace_back(spawnTime + interval * i, Craft::Vector2(x, y), enemyType, movePattern, firePattern);
 	}
+}
+
+// 교차 패턴
+void WaveManager::AddCross(float spawnTime, int leftX, int rightX, int y, int count, float interval, EnemyType enemyType, EnemyFirePattern firePattern)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		wave.emplace_back(spawnTime + interval * i, Craft::Vector2(leftX, y), enemyType, EnemyMovePattern::DiagonalRight, firePattern);
+		wave.emplace_back(spawnTime + interval * i, Craft::Vector2(rightX, y), enemyType, EnemyMovePattern::DiagonalLeft, firePattern);
+	}
+}
+
+void WaveManager::AddTargetPosition(float spawnTime, const Craft::Vector2& spawnPosition, const Craft::Vector2& targetPosition, EnemyType enemyType, EnemyFirePattern firePattern)
+{
+	wave.emplace_back(spawnTime, spawnPosition, targetPosition, enemyType, EnemyMovePattern::TargetStop, firePattern);
+}
+
+void WaveManager::AddBoss(float spawnTime, const Craft::Vector2& targetPosition)
+{
+	// Todo: 보스 소환
 }

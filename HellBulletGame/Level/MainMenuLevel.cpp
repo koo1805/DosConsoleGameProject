@@ -121,4 +121,7 @@ void MainMenuLevel::LoadTitle(const std::string& fileName)
 
 	fclose(file);
 	file = nullptr;
+
+	delete[] buffer;
+	buffer = nullptr;
 }

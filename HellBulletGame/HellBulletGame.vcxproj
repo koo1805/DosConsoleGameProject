@@ -93,31 +93,44 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor\Effect\DestroyEffect.cpp" />
+    <ClCompile Include="Actor\Effect\LaserWarning.cpp" />
+    <ClCompile Include="Actor\Enemy\BossEnemy.cpp" />
+    <ClCompile Include="Actor\Enemy\EightwayEnemy.cpp" />
     <ClCompile Include="Actor\Enemy\Enemy.cpp" />
+    <ClCompile Include="Actor\Enemy\FastEnemy.cpp" />
     <ClCompile Include="Actor\Enemy\NormalEnemy.cpp" />
     <ClCompile Include="Actor\Manager\GameManager.cpp" />
     <ClCompile Include="Actor\Manager\WaveManager.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Projectile\EnemyProjectile.cpp" />
+    <ClCompile Include="Actor\Projectile\LaserProjectile.cpp" />
     <ClCompile Include="Actor\Projectile\PlayerProjectile.cpp" />
     <ClCompile Include="Actor\Enemy\Spawner\EnemySpawner.cpp" />
     <ClCompile Include="Actor\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Actor\Projectile\ProjectileBase.cpp" />
     <ClCompile Include="Level\GameLevel.cpp" />
     <ClCompile Include="Level\MainMenuLevel.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Effect\DestroyEffect.h" />
+    <ClInclude Include="Actor\Effect\LaserWarning.h" />
+    <ClInclude Include="Actor\Enemy\BossEnemy.h" />
+    <ClInclude Include="Actor\Enemy\EightwayEnemy.h" />
     <ClInclude Include="Actor\Enemy\Enemy.h" />
     <ClInclude Include="Actor\Enemy\EnemyStats.h" />
+    <ClInclude Include="Actor\Enemy\FastEnemy.h" />
     <ClInclude Include="Actor\Enemy\NormalEnemy.h" />
     <ClInclude Include="Actor\Manager\GameManager.h" />
     <ClInclude Include="Actor\Manager\WaveManager.h" />
     <ClInclude Include="Actor\Player.h" />
+    <ClInclude Include="Actor\Player\PlayerStats.h" />
     <ClInclude Include="Actor\Projectile\EnemyProjectile.h" />
+    <ClInclude Include="Actor\Projectile\LaserProjectile.h" />
     <ClInclude Include="Actor\Projectile\PlayerProjectile.h" />
     <ClInclude Include="Actor\Enemy\Spawner\EnemySpawner.h" />
     <ClInclude Include="Actor\Enemy\EnemyBase.h" />
+    <ClInclude Include="Actor\Projectile\ProjectileBase.h" />
     <ClInclude Include="Level\GameLevel.h" />
     <ClInclude Include="Level\MainMenuLevel.h" />
   </ItemGroup>

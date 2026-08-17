@@ -1,28 +1,19 @@
 #pragma once
 
-#include <Actor/Actor.h>
+#include <Actor/Projectile/ProjectileBase.h>
 
-class EnemyProjectile : public Craft::Actor
+class EnemyProjectile : public ProjectileBase
 {
 	// 커스텀 타입 설정
-	TYPE_DECLARATIONS(EnemyProjectile, Actor)
+	TYPE_DECLARATIONS(EnemyProjectile, ProjectileBase)
 
 public:
 	EnemyProjectile(
 		const Craft::Vector2& position,
-		float moveSpeed = 15.0f
+		float directionX = 0.0f,
+		float directionY = 1.0f,
+		float moveSpeed = 15.0f,
+		int damage = 1
 	);
-
-private:
-	// 이벤트 함수 오버라이드
-	virtual void Tick(float deltaTime) override;
-
-private:
-	// 이동 처리를 위한 변수
-	float moveSpeed = 0.0f;
-
-	// y위치 처리를 위한 변수
-	float yPosition = 0.0f;
-	float xPosition = 0.0f;
 };
 

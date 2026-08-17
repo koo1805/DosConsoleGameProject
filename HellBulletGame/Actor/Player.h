@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <Actor/Actor.h>
+#include <Actor/Player/PlayerStats.h>
 #include <Util/Timer.h>
 
 class Player : public Craft::Actor
@@ -18,6 +19,14 @@ class Player : public Craft::Actor
 
 public:
 	Player();
+
+public:
+	inline int GetHp() const { return currentHp; }
+	inline int GetMaxHp() const { return playerStats.maxHp; }
+	inline int GetAttack() const { return playerStats.attack; }
+
+	// 피격 함수
+	void TakeDamage(int damage);
 
 private:
 	// 함수 오버라이딩
@@ -38,6 +47,10 @@ private:
 	inline bool CanShoot() const { return timer.IsTimeOut(); }
 
 private:
+	PlayerStats playerStats;
+
+	int currentHp = 0;
+
 	// 이동 처리에 필요한 함수
 	float xPosition = 0.0f;
 	float yPosition = 0.0f;

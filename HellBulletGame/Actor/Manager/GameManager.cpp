@@ -8,6 +8,11 @@ void GameManager::RegisterOnPlayerDead(OnPlayerDead callback)
 	onPlayerDead = callback;
 }
 
+void GameManager::RegisterOnBossDead(OnBossDead callback)
+{
+	onBossDead = callback;
+}
+
 void GameManager::SetPlayerDead(const Craft::Vector2& deadPosition)
 {
 	// 예외 처리 - 이미 플레이어가 죽은 상태라면 종료
@@ -26,5 +31,20 @@ void GameManager::SetPlayerDead(const Craft::Vector2& deadPosition)
 	if (onPlayerDead)
 	{
 		onPlayerDead();
+	}
+}
+
+void GameManager::SetBossDead()
+{
+	if (isBossDead)
+	{
+		return;
+	}
+
+	isBossDead = true;
+
+	if (onBossDead)
+	{
+		onBossDead();
 	}
 }

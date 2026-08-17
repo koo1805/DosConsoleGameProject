@@ -4,8 +4,11 @@
 #include <UI/HUDPanel.h>
 #include <Util/Timer.h>
 
+#include <memory>
+
 // 전방 선언
 class GameManager;
+class Player;
 
 class GameLevel : public Craft::Level
 {
@@ -13,7 +16,8 @@ class GameLevel : public Craft::Level
 	enum class GameState
 	{
 		Playing,
-		GameOverWait
+		GameOverWait,
+		GameClear
 	};
 
 public:
@@ -29,10 +33,18 @@ private:
 	// HUD를 그리는 함수
 	void DrawHUD();
 
+	// 게임 클리어 문자 출력
+	void DrawGameClear();
+
 	// 플레이어가 죽었을 때 실행될 콜백 함수
 	void PlayerDied();
 
+	void BossDied();
+
 private:
+	// 플레이어
+	std::weak_ptr<Player> player;
+
 	// 게임 관리자 클래스
 	std::shared_ptr<GameManager> gameManager;
 
